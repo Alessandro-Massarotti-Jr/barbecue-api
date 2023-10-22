@@ -28,12 +28,12 @@ class UsersController extends Controller
     }
     public function find(FindRequest $request)
     {
-        return ReturnApi::success("User Found", User::find($request->validated()['id']));
+        return ReturnApi::success("User Found", User::with(['ownerBarbecues', 'barbecues'])->find($request->validated()['id']));
     }
     public function update(UpdateRequest $request)
     {
         $data = $request->validated();
-        $user = User::find($data['id']);
+        $user = User::with(['ownerBarbecues', 'barbecues'])->find($data['id']);
         $user->name = $data['name'];
         $user->email = $data['email'];
         if ($data['password']) {
@@ -46,7 +46,7 @@ class UsersController extends Controller
     public function updateProfileImage(UpdateProfileImageRequest $request)
     {
         $data = $request->validated();
-        $user = User::find($data['id']);
+        $user = User::with(['ownerBarbecues', 'barbecues'])->find($data['id']);
         if ($user->profile_image_path) {
             Storage::delete($user->profile_image_path);
         }
@@ -58,10 +58,10 @@ class UsersController extends Controller
 
     public function delete(DeleteRequest $request)
     {
-        return ReturnApi::success("User deleted", User::find($request->validated()['id'])->delete());
+        return ReturnApi::success("User deleted", User::with(['ownerBarbecues', 'barbecues'])->find($request->validated()['id'])->delete());
     }
     public function get()
     {
-        return ReturnApi::success("All users", User::get());
+        return ReturnApi::success("All users", User::with(['ownerBarbecues', 'barbecues'])->get());
     }
 }

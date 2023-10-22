@@ -1,6 +1,7 @@
 <?php
 
 use App\Helpers\ReturnApi;
+use App\Http\Controllers\Barbecues\BarbecuesController;
 use App\Http\Controllers\Users\UsersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -27,4 +28,12 @@ Route::prefix('/users')->group(function () {
     Route::get('/{user_id}', [UsersController::class, 'find']);
     Route::put('/{user_id}', [UsersController::class, 'update']);
     Route::delete('/{user_id}', [UsersController::class, 'delete']);
+});
+
+Route::prefix('/barbecues')->group(function () {
+    Route::get('/', [BarbecuesController::class, 'get']);
+    Route::post('/', [BarbecuesController::class, 'create']);
+    Route::get('/{barcecue_id}', [BarbecuesController::class, 'find']);
+    Route::get('/{barcecue_id}', [BarbecuesController::class, 'update']);
+    Route::get('/{barcecue_id}', [BarbecuesController::class, 'delete']);
 });

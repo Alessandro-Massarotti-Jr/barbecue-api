@@ -4,12 +4,16 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasAttributes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
@@ -35,5 +39,16 @@ class User extends Authenticatable
         return Attribute::make(
             get: fn ($value) => $this->profile_image_path ?  asset('storage' . str_replace('public', '', $this->profile_image_path)) : null,
         );
+    }
+
+    public function ownerBarbecues(): HasMany
+    {
+        return $this->hasMany(Barbecue::class, 'owner_id', 'id');
+    }
+
+    public function barbecues(): BelongsToMany
+    {
+        return $this->belongsToMany(Barbecue::class, 'user_has_barbecues')
+            ->withPivot('paid', 'with_drink');
     }
 }

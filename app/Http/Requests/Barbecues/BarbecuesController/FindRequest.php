@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Barbecues\BarbecuesController;
 
+use App\Exceptions\ApiValidationException;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
 class FindRequest extends FormRequest
@@ -11,7 +13,7 @@ class FindRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +24,23 @@ class FindRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'id' => [
+                'required',
+                'integer',
+                'exists:barbecues,id'
+            ]
         ];
+    }
+
+    public function prepareForValidation(): void
+    {
+        $this->merge([
+            'id' => $this->route('barbecue_id'),
+        ]);
+    }
+
+    public function failedValidation(Validator $validator): void
+    {
+        throw new ApiValidationException($validator->errors()->first(), $validator->errors());
     }
 }

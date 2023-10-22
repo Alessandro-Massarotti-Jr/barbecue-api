@@ -33,7 +33,7 @@ Route::prefix('/users')->group(function () {
 Route::prefix('/barbecues')->group(function () {
     Route::get('/', [BarbecuesController::class, 'get']);
     Route::post('/', [BarbecuesController::class, 'create']);
-    Route::get('/{barcecue_id}', [BarbecuesController::class, 'find']);
-    Route::get('/{barcecue_id}', [BarbecuesController::class, 'update']);
-    Route::get('/{barcecue_id}', [BarbecuesController::class, 'delete']);
+    Route::get('/{barbecue_id}', [BarbecuesController::class, 'find']);
+    Route::put('/{barbecue_id}', [BarbecuesController::class, 'update']);
+    Route::delete('/{barbecue_id}', [BarbecuesController::class, 'delete']);
 });

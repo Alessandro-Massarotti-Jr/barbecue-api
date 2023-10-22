@@ -11,6 +11,7 @@ use App\Http\Requests\Barbecues\BarbecuesController\FindRequest;
 use App\Http\Requests\Barbecues\BarbecuesController\UpdateRequest;
 use App\Models\Barbecue;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class BarbecuesController extends Controller
@@ -41,11 +42,11 @@ class BarbecuesController extends Controller
                 ];
             }
 
-            $barbecue = Barbecue::create([...$data, "owner_id" => 1]);
+            $barbecue = Barbecue::create([...$data, "owner_id" => Auth::id()]);
             $barbecue->users()->sync($barbecueUsers);
 
             DB::commit();
-            return ReturnApi::success("barbecue created",  Barbecue::with(['owner', 'users'])->find($barbecue->id));
+            return ReturnApi::success("barbecue created",  Barbecue::with(['owner', 'users'])->find($barbecue->id), 201);
         } catch (\Exception $exception) {
             dd($exception);
             DB::rollBack();
@@ -78,7 +79,7 @@ class BarbecuesController extends Controller
         } catch (\Exception $exception) {
             dd($exception);
             DB::rollBack();
-            throw new ApiException("Error in create barbecue");
+            throw new ApiException("Error in update barbecue");
         }
     }
 

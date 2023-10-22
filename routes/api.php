@@ -1,6 +1,7 @@
 <?php
 
 use App\Helpers\ReturnApi;
+use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Barbecues\BarbecuesController;
 use App\Http\Controllers\Users\UsersController;
 use Illuminate\Http\Request;
@@ -21,16 +22,24 @@ Route::get('/', function (Request $request) {
     return ReturnApi::success("App running");
 });
 
-Route::prefix('/users')->group(function () {
+
+Route::prefix('auth')->middleware('auth.api')->group(function () {
+    Route::get('/logout', [AuthController::class, 'logout']);
+    Route::get('/me', [AuthController::class, 'me']);
+    Route::post('/login', [AuthController::class, 'login'])->withoutMiddleware('auth.api');
+});
+
+
+Route::prefix('/users')->middleware('auth.api')->group(function () {
     Route::get('/', [UsersController::class, 'get']);
-    Route::post('/', [UsersController::class, 'create']);
+    Route::post('/', [UsersController::class, 'create'])->withoutMiddleware('auth.api');
     Route::post('/{user_id}/update-profile-image', [UsersController::class, 'updateProfileImage']);
     Route::get('/{user_id}', [UsersController::class, 'find']);
     Route::put('/{user_id}', [UsersController::class, 'update']);
     Route::delete('/{user_id}', [UsersController::class, 'delete']);
 });
 
-Route::prefix('/barbecues')->group(function () {
+Route::prefix('/barbecues')->middleware('auth.api')->group(function () {
     Route::get('/', [BarbecuesController::class, 'get']);
     Route::post('/', [BarbecuesController::class, 'create']);
     Route::get('/{barbecue_id}', [BarbecuesController::class, 'find']);

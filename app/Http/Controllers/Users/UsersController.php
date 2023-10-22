@@ -24,7 +24,7 @@ class UsersController extends Controller
             'password' => Hash::make($data['password']),
             'email' => $data['email'],
             'profile_image_path' => $data['profile_image'] ?  $data['profile_image']->store('public/users') : null
-        ]));
+        ]), 201);
     }
     public function find(FindRequest $request)
     {

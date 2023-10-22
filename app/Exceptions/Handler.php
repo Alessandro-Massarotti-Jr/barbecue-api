@@ -2,7 +2,10 @@
 
 namespace App\Exceptions;
 
+use App\Helpers\ReturnApi;
+use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -25,6 +28,24 @@ class Handler extends ExceptionHandler
     {
         $this->reportable(function (Throwable $e) {
             //
+        });
+
+        $this->renderable(function (NotFoundHttpException  $notFoundHttpException) {
+            return ReturnApi::messageReturn(true, "Route not found", $notFoundHttpException, [
+                "file" => $notFoundHttpException->getFile(),
+                "message" => $notFoundHttpException->getMessage(),
+                "code" => $notFoundHttpException->getCode(),
+                "line" => $notFoundHttpException->getLine()
+            ], 404);
+        });
+
+        $this->renderable(function (Exception $exception) {
+            return ReturnApi::messageReturn(true, "Unspected error", $exception, [
+                "file" => $exception->getFile(),
+                "message" => $exception->getMessage(),
+                "code" => $exception->getCode(),
+                "line" => $exception->getLine()
+            ], 500);
         });
     }
 }

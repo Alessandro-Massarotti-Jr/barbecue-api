@@ -1,5 +1,7 @@
 <?php
 
+use App\Helpers\ReturnApi;
+use App\Http\Controllers\Users\UsersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +16,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::get('/', function (Request $request) {
+    return ReturnApi::success("App running");
+});
+
+Route::prefix('/users')->group(function () {
+    Route::get('/', [UsersController::class, 'get']);
+    Route::post('/', [UsersController::class, 'create']);
+    Route::post('/{user_id}/update-profile-image', [UsersController::class, 'updateProfileImage']);
+    Route::get('/{user_id}', [UsersController::class, 'find']);
+    Route::put('/{user_id}', [UsersController::class, 'update']);
+    Route::delete('/{user_id}', [UsersController::class, 'delete']);
 });

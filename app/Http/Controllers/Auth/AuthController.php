@@ -16,7 +16,7 @@ class AuthController extends Controller
     {
 
         if (!$token = auth('api')->attempt($request->validated())) {
-            throw new ApiException("Usuário ou senha incorretos", 401);
+            throw new ApiException("Wrong credentials", 401);
         }
 
         return ReturnApi::success("Login success", [

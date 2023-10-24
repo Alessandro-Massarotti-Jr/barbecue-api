@@ -20,7 +20,7 @@ class AuthMiddleware
         try {
             $user = JWTAuth::parseToken()->authenticate();
         } catch (\Exception $exception) {
-            throw new ApiException("unauthenticated", 404);
+            throw new ApiException("unauthenticated", 401);
         }
 
         return $next($request);

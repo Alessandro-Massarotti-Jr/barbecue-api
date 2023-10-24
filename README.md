@@ -35,7 +35,7 @@ Link for [Api Documentation](https://documenter.getpostman.com/view/28170394/2s9
 
 ## config
 
-Create the `.env` based on `.env.example file`
+Create the `.env` file based on `.env.example` file.
 
 ```bash
  composer install #to install project dependencies

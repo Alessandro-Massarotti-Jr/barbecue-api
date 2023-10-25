@@ -17,7 +17,7 @@ In this API must be possible:
 - Create, Read, Update and Delete Barbecues
 - Authenticate registered Users
     
-That API must serve [This](https://trinca-frontend-test.vercel.app/) FrontEnd application from [Icaro Apollo](https://github.com/IcaroApoloBR)
+That API must serve [This](https://trinca-frontend-test.vercel.app/) FrontEnd application from [Icaro Apolo](https://github.com/IcaroApoloBR)
 
 Link for [Api Documentation](https://documenter.getpostman.com/view/28170394/2s9YRCXrdA)
 
